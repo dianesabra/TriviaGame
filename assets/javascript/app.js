@@ -64,6 +64,7 @@ var intervalID;
 var image;
 var timeValueResult = 0;
 var resultType = "";
+var timeoutID;
 
 function startGame() {
   createTimer();
@@ -117,12 +118,12 @@ function displayResult() {
   $(".imageSpot").html(image);
   questionNumber++;
   timeValue = 5;
-  setTimeout(resetGame, 5000);
-  //resetGame();
+  timeoutID = setTimeout(resetGame, 5000);
 }
 
 function resetGame() {
   clearInterval(intervalID);
+  clearTimeout(timeoutID);
   //setTimeout(resetGame, 5000);
   $(".list-group-item").detach();
   userChoice = "";
