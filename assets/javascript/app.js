@@ -92,12 +92,16 @@ function displayQuestion() {
 $(".choices-div").on("click", "button", function(event) {
   userChoice = $(this).attr("choiceID");
   questionID = $(this).attr("questionID");
+  resultTxt =
+    "The answer is " +
+    questionBank[questionID].choices[questionBank[questionID].answer] +
+    ".";
   if (Number(userChoice) === questionBank[questionID].answer) {
     correctGuesses++;
-    resultType = "Correct!";
+    resultType = "Correct! " + resultTxt;
   } else {
     wrongGuesses++;
-    resultType = "Wrong!";
+    resultType = "Wrong! " + resultTxt;
   }
   displayResult();
 });
@@ -112,7 +116,7 @@ function displayResult() {
   image.attr("src", questionBank[questionID].picture);
   $(".imageSpot").html(image);
   questionNumber++;
-  debugger;
+  timeValue = 5;
   setTimeout(resetGame, 5000);
   //resetGame();
 }
