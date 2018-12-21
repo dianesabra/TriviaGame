@@ -135,6 +135,9 @@ function resetGame() {
     displayQuestion();
     userChoice = "";
     questionID = "";
+  } else {
+    $(".btn-primary").html("Restart");
+    $(".btn-primary").css("visibility", "visible");
   }
 }
 
