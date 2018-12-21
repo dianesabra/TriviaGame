@@ -73,6 +73,7 @@ function startGame() {
 }
 
 function displayQuestion() {
+  $(".row").css("visibility", "visible");
   $(".btn-primary").css("visibility", "hidden");
   $(".resultPart").css("visibility", "hidden");
   $(".question").html(questionBank[questionNumber].question);
@@ -106,13 +107,17 @@ $(".choices-div").on("click", "button", function(event) {
 });
 
 function displayResult() {
+  if (questionNumber <= questionBank.length - 1) {
+    clearInterval(intervalID);
+    $(".timeRemainingTxt").html(0);
+  }
   $(".questionPart").empty();
   $(".resultPart").css("visibility", "visible");
   $(".correctTxt").html(correctGuesses);
   $(".wrongTxt").html(wrongGuesses);
   $(".resultType").html(resultType);
   image = $("<img>");
-  image.attr("src", questionBank[i].picture);
+  image.attr("src", questionBank[questionNumber].picture);
   $(".imageSpot").html(image);
   questionNumber++;
   timeValue = 5;
@@ -135,11 +140,18 @@ function resetGame() {
 
 function startTimer() {
   timeValue--;
-  debugger;
   if (timeValue === 0) {
     displayResult();
     timeValue = 30;
     if (userChoice === "") {
+      resultTxt =
+        "The answer is " +
+        questionBank[questionNumber].choices[
+          questionBank[questionNumber].answer
+        ] +
+        ".";
+      resultType = "You Didn't Answer! " + resultTxt;
+      $(".resultType").html(resultType);
       unansweredGuesses++;
       $(".unansweredTxt").html(unansweredGuesses);
     }

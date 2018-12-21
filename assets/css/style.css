@@ -27,3 +27,7 @@ body {
 .counters {
   margin: 50px;
 }
+
+.row {
+  visibility: hidden;
+}
