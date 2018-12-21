@@ -65,6 +65,7 @@ var image;
 var timeValueResult = 0;
 var resultType = "";
 var timeoutID;
+var i;
 
 function startGame() {
   createTimer();
@@ -72,21 +73,18 @@ function startGame() {
 }
 
 function displayQuestion() {
+  $(".btn-primary").css("visibility", "hidden");
   $(".resultPart").css("visibility", "hidden");
-  if (questionNumber > questionBank.length - 1) {
-    stopTimer();
-  } else {
-    $(".question").html(questionBank[questionNumber].question);
-    var choiceBank = questionBank[questionNumber].choices;
-    for (var i = 0; i < choiceBank.length; i++) {
-      var button = $("<button>");
-      button.text(choiceBank[i]);
-      button.attr("choiceID", i);
-      button.attr("questionID", questionNumber);
-      button.attr("class", "list-group-item");
-      $(".choices-div").append(button);
-      $(".questionNumber").html(questionNumber + 1);
-    }
+  $(".question").html(questionBank[questionNumber].question);
+  var choiceBank = questionBank[questionNumber].choices;
+  for (i = 0; i < choiceBank.length; i++) {
+    var button = $("<button>");
+    button.text(choiceBank[i]);
+    button.attr("choiceID", i);
+    button.attr("questionID", questionNumber);
+    button.attr("class", "list-group-item");
+    $(".choices-div").append(button);
+    $(".questionNumber").html(questionNumber + 1);
   }
 }
 
@@ -114,7 +112,7 @@ function displayResult() {
   $(".wrongTxt").html(wrongGuesses);
   $(".resultType").html(resultType);
   image = $("<img>");
-  image.attr("src", questionBank[questionID].picture);
+  image.attr("src", questionBank[i].picture);
   $(".imageSpot").html(image);
   questionNumber++;
   timeValue = 5;
@@ -124,20 +122,23 @@ function displayResult() {
 function resetGame() {
   clearInterval(intervalID);
   clearTimeout(timeoutID);
-  //setTimeout(resetGame, 5000);
   $(".list-group-item").detach();
-  userChoice = "";
-  questionID = "";
-  timeValue = 30;
-  createTimer();
-  startTimer();
-  displayQuestion();
+  if (questionNumber <= questionBank.length - 1) {
+    timeValue = 30;
+    createTimer();
+    startTimer();
+    displayQuestion();
+    userChoice = "";
+    questionID = "";
+  }
 }
 
 function startTimer() {
   timeValue--;
+  debugger;
   if (timeValue === 0) {
     displayResult();
+    timeValue = 30;
     if (userChoice === "") {
       unansweredGuesses++;
       $(".unansweredTxt").html(unansweredGuesses);
@@ -149,4 +150,7 @@ function startTimer() {
 function createTimer() {
   intervalID = setInterval(startTimer, 1000);
 }
-startGame();
+
+$(".btn-primary").on("click", function(event) {
+  startGame();
+});
