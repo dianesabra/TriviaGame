@@ -56,7 +56,7 @@ var questionBank = [
 var correctGuesses = 0;
 var wrongGuesses = 0;
 var unansweredGuesses = 0;
-var timeValue = 30;
+var timeValue = 3;
 var questionNumber = 0;
 var userChoice = "";
 var questionID = "";
@@ -68,6 +68,7 @@ var timeoutID;
 var i;
 
 function startGame() {
+  timeValue = 30;
   createTimer();
   displayQuestion();
 }
@@ -76,6 +77,7 @@ function displayQuestion() {
   $(".row").css("visibility", "visible");
   $(".btn-primary").css("visibility", "hidden");
   $(".resultPart").css("visibility", "hidden");
+  $(".questionPart").css("visibility", "visible");
   $(".question").html(questionBank[questionNumber].question);
   var choiceBank = questionBank[questionNumber].choices;
   for (i = 0; i < choiceBank.length; i++) {
@@ -138,10 +140,14 @@ function resetGame() {
   } else {
     $(".btn-primary").html("Restart");
     $(".btn-primary").css("visibility", "visible");
+    $(".row").css("visibility", "hidden");
+    $(".questionPart").css("visibility", "hidden");
+    $(".resultPart").css("visibility", "hidden");
   }
 }
 
 function startTimer() {
+  debugger;
   timeValue--;
   if (timeValue === 0) {
     displayResult();
