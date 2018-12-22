@@ -56,7 +56,7 @@ var questionBank = [
 var correctGuesses = 0;
 var wrongGuesses = 0;
 var unansweredGuesses = 0;
-var timeValue = 3;
+var timeValue = 10;
 var questionNumber = 0;
 var userChoice = "";
 var questionID = "";
@@ -68,16 +68,15 @@ var timeoutID;
 var i;
 
 function startGame() {
-  timeValue = 30;
+  timeValue = 10;
+  questionNumber = 0;
   createTimer();
   displayQuestion();
 }
 
 function displayQuestion() {
-  $(".row").css("visibility", "visible");
-  $(".btn-primary").css("visibility", "hidden");
-  $(".resultPart").css("visibility", "hidden");
-  $(".questionPart").css("visibility", "visible");
+  $(".row, .questionPart").css("visibility", "visible");
+  $(".btn-primary, .resultPart").css("visibility", "hidden");
   $(".question").html(questionBank[questionNumber].question);
   var choiceBank = questionBank[questionNumber].choices;
   for (i = 0; i < choiceBank.length; i++) {
@@ -87,8 +86,12 @@ function displayQuestion() {
     button.attr("questionID", questionNumber);
     button.attr("class", "list-group-item");
     $(".choices-div").append(button);
-    $(".questionNumber").html(questionNumber + 1);
+    console.log(questionNumber + 1);
   }
+  $(".questionTitle").html(
+    "Question " + "<span class='questionNumberTxt'></span>"
+  );
+  $(".questionNumberTxt").html(questionNumber + 1);
 }
 
 $(".choices-div").on("click", "button", function(event) {
@@ -118,12 +121,12 @@ function displayResult() {
   $(".correctTxt").html(correctGuesses);
   $(".wrongTxt").html(wrongGuesses);
   $(".resultType").html(resultType);
-  image = $("<img>");
+  image = $("<img width=300px height=200px>");
   image.attr("src", questionBank[questionNumber].picture);
   $(".imageSpot").html(image);
   questionNumber++;
   timeValue = 5;
-  timeoutID = setTimeout(resetGame, 5000);
+  timeoutID = setTimeout(resetGame, 3000);
 }
 
 function resetGame() {
@@ -131,7 +134,7 @@ function resetGame() {
   clearTimeout(timeoutID);
   $(".list-group-item").detach();
   if (questionNumber <= questionBank.length - 1) {
-    timeValue = 30;
+    timeValue = 10;
     createTimer();
     startTimer();
     displayQuestion();
@@ -140,19 +143,18 @@ function resetGame() {
   } else {
     $(".btn-primary").html("Restart");
     $(".btn-primary").css("visibility", "visible");
-    $(".row").css("visibility", "hidden");
-    $(".questionPart").css("visibility", "hidden");
-    $(".resultPart").css("visibility", "hidden");
+    $(".questionTitle").empty();
+    $(".questionTitle").html("Game Over!");
+    $(".resultType").css("visibility", "hidden");
+    $(".imageSpot").html("<img src='assets/images/gameover.gif'>");
   }
 }
 
 function startTimer() {
-  debugger;
   timeValue--;
   if (timeValue === 0) {
-    displayResult();
-    timeValue = 30;
     if (userChoice === "") {
+      debugger;
       resultTxt =
         "The answer is " +
         questionBank[questionNumber].choices[
@@ -164,6 +166,8 @@ function startTimer() {
       unansweredGuesses++;
       $(".unansweredTxt").html(unansweredGuesses);
     }
+    displayResult();
+    timeValue = 10;
   }
   $(".timeRemainingTxt").html(timeValue);
 }

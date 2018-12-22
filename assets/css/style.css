@@ -20,7 +20,6 @@ body {
   position: relative;
   top: 120px;
   font-size: 50px;
-  /* float: left; */
 }
 
 .card-text,
@@ -30,4 +29,9 @@ body {
 
 .row {
   visibility: hidden;
+}
+
+.btn-primary {
+  background-color: red;
+  border-color: red;
 }
